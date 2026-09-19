@@ -1,45 +1,27 @@
 <!DOCTYPE html>
-<html lang="sv">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NetherHost — Game Hosting</title>
+
+<title>Eravision 01</title>
 
 <style>
-/* =========================================================
-   NETHERHOST
-   COMPLETE SINGLE-FILE FRONTEND
-   HTML + CSS + JAVASCRIPT
-========================================================= */
-
 :root {
-    --bg: #07090d;
-    --bg2: #0a0d12;
-    --panel: #0d1118;
-    --panel2: #111720;
-    --panel3: #151c26;
-
-    --border: rgba(255,255,255,.08);
-    --border-orange: rgba(255,102,0,.28);
-
-    --text: #f5f7fa;
-    --muted: #8d98a8;
-
-    --orange: #ff6500;
-    --orange-light: #ff9b57;
-
-    --green: #42df8c;
-    --red: #ff5868;
-    --blue: #6d91ff;
-
-    --radius: 14px;
-    --shadow: 0 25px 80px rgba(0,0,0,.45);
+    --bg: #07030c;
+    --bg2: #10051a;
+    --pink: #ff2e93;
+    --purple: #9d35ff;
+    --cyan: #00c8ff;
+    --white: #ffffff;
+    --muted: #b9a9c4;
+    --line: rgba(255,255,255,.10);
 }
 
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 html {
@@ -47,1404 +29,1070 @@ html {
 }
 
 body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -2;
+
     background:
-        radial-gradient(circle at 50% -20%, rgba(255,100,0,.08), transparent 35%),
-        var(--bg);
-    color: var(--text);
-    font-family:
-        Inter,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Roboto,
-        Arial,
-        sans-serif;
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+
+    background-size: 55px 55px;
+
+    mask-image: linear-gradient(
+        to bottom,
+        #000,
+        transparent 90%
+    );
 }
 
-button,
-input,
-textarea,
-select {
-    font: inherit;
+/* =========================
+   BACKGROUND
+========================= */
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: -3;
+    opacity: .3;
 }
 
-button {
-    cursor: pointer;
+.blob.one {
+    width: 420px;
+    height: 420px;
+    background: var(--pink);
+    left: -180px;
+    top: 10%;
+    animation: blobOne 12s ease-in-out infinite;
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+.blob.two {
+    width: 500px;
+    height: 500px;
+    background: var(--purple);
+    right: -230px;
+    top: 35%;
+    animation: blobTwo 15s ease-in-out infinite;
 }
 
-/* =========================================================
-   UTILITIES
-========================================================= */
-
-.container {
-    width: min(1180px, calc(100% - 32px));
-    margin: auto;
+.blob.three {
+    width: 350px;
+    height: 350px;
+    background: var(--cyan);
+    left: 35%;
+    bottom: -180px;
+    animation: blobThree 13s ease-in-out infinite;
 }
 
-.hidden {
-    display: none !important;
+@keyframes blobOne {
+    50% {
+        transform: translate(170px, 100px) scale(1.15);
+    }
 }
 
-.muted {
-    color: var(--muted);
+@keyframes blobTwo {
+    50% {
+        transform: translate(-130px, -90px) scale(.85);
+    }
 }
 
-.orange {
-    color: var(--orange-light);
+@keyframes blobThree {
+    50% {
+        transform: translate(80px, -120px) scale(1.2);
+    }
 }
 
-.green {
-    color: var(--green);
+/* =========================
+   PARTICLES
+========================= */
+
+#particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
 }
 
-.stars {
-    color: #ffb438;
-    letter-spacing: 2px;
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    opacity: .35;
+
+    animation-name: particleMove;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }
 
-.btn {
-    border: 1px solid var(--border);
-    background: var(--panel2);
-    color: white;
-    border-radius: 10px;
-    padding: 11px 16px;
-    font-weight: 800;
-    font-size: 13px;
-    transition: .2s ease;
+@keyframes particleMove {
+    from {
+        transform: translateY(110vh) rotate(0deg);
+    }
+
+    to {
+        transform: translateY(-10vh) rotate(360deg);
+    }
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-orange);
-}
+/* =========================
+   HEADER
+========================= */
 
-.btn.primary {
-    border: 0;
-    background: linear-gradient(135deg, #ff7b19, #ff4c00);
-    box-shadow: 0 10px 35px rgba(255,80,0,.18);
-}
-
-.btn.danger {
-    color: #ff6878;
-    border-color: rgba(255,80,100,.2);
-    background: rgba(255,80,100,.06);
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 950;
-    font-size: 19px;
-}
-
-.logo-icon {
-    width: 35px;
-    height: 35px;
-    display: grid;
-    place-items: center;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#ff913b,#ee4300);
-    box-shadow: 0 0 35px rgba(255,90,0,.25);
-}
-
-.logo-icon::after {
-    content: "N";
-    font-weight: 1000;
-}
-
-.pill {
-    border: 1px solid var(--border);
-    background: #10151d;
-    border-radius: 999px;
-    padding: 6px 10px;
-    font-size: 10px;
-}
-
-/* =========================================================
-   NAVBAR
-========================================================= */
-
-.nav {
+header {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    height: 72px;
-    z-index: 1000;
+    width: 100%;
+    height: 78px;
 
-    background: rgba(7,9,13,.84);
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    backdrop-filter: blur(20px);
-}
+    padding: 0 6%;
 
-.nav-inner {
-    height: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+
+    z-index: 100;
+
+    transition: .35s ease;
 }
 
-.nav-links {
+header.scrolled {
+    background: rgba(7,3,12,.72);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--line);
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 950;
+    letter-spacing: -1px;
+}
+
+.logo span {
+    color: var(--pink);
+}
+
+nav {
+    margin-left: auto;
+
     display: flex;
-    gap: 25px;
-    color: #929cad;
+    align-items: center;
+    gap: 30px;
+}
+
+nav a {
+    position: relative;
+
+    color: #ddd;
+    text-decoration: none;
+
     font-size: 13px;
+    font-weight: 700;
+
+    transition: .25s ease;
 }
 
-.nav-links a {
-    transition: .2s;
+nav a::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+
+    width: 0;
+    height: 2px;
+
+    background: linear-gradient(
+        90deg,
+        var(--pink),
+        var(--cyan)
+    );
+
+    transition: .3s ease;
 }
 
-.nav-links a:hover {
+nav a:hover {
     color: white;
 }
 
-.nav-actions {
-    display: flex;
-    gap: 8px;
+nav a:hover::after {
+    width: 100%;
 }
 
-/* =========================================================
+.menu {
+    display: none;
+
+    border: none;
+    background: none;
+
+    color: white;
+    font-size: 28px;
+
+    cursor: pointer;
+}
+
+/* =========================
    HERO
-========================================================= */
+========================= */
 
 .hero {
-    min-height: 780px;
-    padding: 150px 0 100px;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-}
+    min-height: 100vh;
 
-.hero-grid {
+    padding: 150px 7% 80px;
+
     display: grid;
     grid-template-columns: 1.05fr .95fr;
-    gap: 60px;
+
+    gap: 50px;
+
     align-items: center;
+
+    position: relative;
 }
 
 .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    margin-bottom: 22px;
 
-    padding: 7px 11px;
-    border-radius: 999px;
+    color: #e9dce9;
 
-    color: #ff9d60;
-    background: rgba(255,100,0,.07);
-    border: 1px solid rgba(255,100,0,.2);
+    text-transform: uppercase;
+    letter-spacing: 4px;
 
-    font-size: 11px;
-    font-weight: 900;
-}
-
-.live-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 15px var(--green);
-}
-
-.hero h1 {
-    font-size: clamp(50px, 6vw, 82px);
-    line-height: .95;
-    letter-spacing: -5px;
-    margin: 22px 0;
-}
-
-.gradient {
-    background: linear-gradient(
-        100deg,
-        white 25%,
-        #ffad72 60%,
-        #ff4800
-    );
-
-    color: transparent;
-    background-clip: text;
-    -webkit-background-clip: text;
-}
-
-.hero-copy {
-    max-width: 620px;
-    color: var(--muted);
-    line-height: 1.75;
-    font-size: 17px;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 28px;
-}
-
-.trust {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 22px;
-    margin-top: 27px;
-    color: #7f8998;
     font-size: 12px;
+    font-weight: 800;
 }
 
-/* HERO PREVIEW */
-
-.hero-visual {
-    position: relative;
+.eyebrow span {
+    color: var(--pink);
 }
 
-.hero-glow {
-    position: absolute;
-    width: 400px;
-    height: 400px;
+h1 {
+    font-size: clamp(65px, 9vw, 145px);
 
-    right: 0;
-    top: 0;
+    line-height: .82;
 
-    border-radius: 50%;
-    background: rgba(255,80,0,.08);
-    filter: blur(40px);
+    letter-spacing: -7px;
+
+    font-weight: 1000;
 }
 
-.preview {
-    position: relative;
-
-    padding: 21px;
-
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 22px;
-
+.gradient-text {
     background:
         linear-gradient(
-            145deg,
-            rgba(20,26,35,.98),
-            rgba(8,11,16,.98)
+            100deg,
+            #ffffff 10%,
+            var(--pink) 42%,
+            var(--purple) 70%,
+            var(--cyan)
         );
 
-    box-shadow: var(--shadow);
+    background-size: 300%;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+
+    animation: gradientMove 7s ease infinite;
 }
 
-.server-row {
+@keyframes gradientMove {
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.outline {
+    color: transparent;
+
+    -webkit-text-stroke: 1px rgba(255,255,255,.65);
+}
+
+.hero p {
+    max-width: 580px;
+
+    margin: 30px 0;
+
+    color: var(--muted);
+
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.actions {
     display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.btn {
+    position: relative;
+
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+
+    padding: 15px 23px;
+
+    border-radius: 999px;
+
+    border: 1px solid rgba(255,255,255,.16);
+
+    background: rgba(255,255,255,.05);
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 800;
+
+    overflow: hidden;
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
 }
 
-.server-name {
-    font-weight: 900;
+.btn.primary {
+    background:
+        linear-gradient(
+            100deg,
+            var(--pink),
+            var(--purple)
+        );
+
+    box-shadow:
+        0 0 35px rgba(255,46,147,.3);
 }
 
-.server-sub {
-    margin-top: 3px;
-    color: #697485;
-    font-size: 10px;
+.btn:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 15px 40px rgba(255,46,147,.22);
 }
 
-.online {
-    color: var(--green);
-    font-size: 11px;
-}
+/* =========================
+   HERO VISUAL
+========================= */
 
-.mini-stats {
+.visual {
+    height: 590px;
+
     display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 9px;
-    margin: 20px 0;
+    place-items: center;
+
+    position: relative;
+
+    transition: transform .3s ease;
 }
 
-.mini-stat {
-    padding: 12px;
-    border-radius: 11px;
-    background: rgba(255,255,255,.025);
-    border: 1px solid rgba(255,255,255,.05);
+.core {
+    width: 230px;
+    height: 230px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            #ffffff 0 2%,
+            var(--cyan) 8%,
+            var(--purple) 38%,
+            var(--pink) 62%,
+            transparent 72%
+        );
+
+    filter:
+        drop-shadow(
+            0 0 55px var(--pink)
+        );
+
+    animation: corePulse 4s ease-in-out infinite;
+
+    position: relative;
 }
 
-.mini-stat b {
-    display: block;
-    font-size: 16px;
+@keyframes corePulse {
+    50% {
+        transform: scale(1.08);
+
+        filter:
+            drop-shadow(
+                0 0 90px var(--purple)
+            );
+    }
 }
 
-.mini-stat span {
-    color: #707b8d;
-    font-size: 9px;
-}
-
-.chart {
-    height: 160px;
-    display: flex;
-    align-items: end;
-    gap: 5px;
-}
-
-.chart-bar {
-    flex: 1;
-    min-height: 10px;
-    border-radius: 5px 5px 2px 2px;
-    background: linear-gradient(#ff9c5c,#ff4b00);
-    opacity: .8;
-}
-
-.floating-card {
+.ring {
     position: absolute;
-    right: -25px;
-    bottom: -25px;
 
-    width: 220px;
-    padding: 16px;
+    border: 1px solid rgba(255,255,255,.28);
 
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 15px;
+    border-radius: 50%;
 
-    background: rgba(15,20,27,.97);
-    box-shadow: var(--shadow);
+    transform:
+        rotateX(65deg)
+        rotateY(15deg);
 }
 
-/* =========================================================
+.ring.one {
+    width: 430px;
+    height: 430px;
+
+    animation:
+        ringSpin 12s linear infinite;
+}
+
+.ring.two {
+    width: 520px;
+    height: 300px;
+
+    border-color: rgba(255,46,147,.55);
+
+    animation:
+        ringSpin 9s linear infinite reverse;
+}
+
+.ring.three {
+    width: 300px;
+    height: 520px;
+
+    border-color: rgba(0,200,255,.4);
+
+    animation:
+        ringSpin 15s linear infinite;
+}
+
+@keyframes ringSpin {
+    to {
+        transform:
+            rotateX(65deg)
+            rotateY(15deg)
+            rotate(360deg);
+    }
+}
+
+/* =========================
    SECTIONS
-========================================================= */
+========================= */
 
 .section {
-    padding: 100px 0;
+    padding: 120px 7%;
+    position: relative;
 }
 
 .section-head {
     display: flex;
+
     justify-content: space-between;
     align-items: end;
-    gap: 30px;
-    margin-bottom: 35px;
+
+    gap: 20px;
+
+    margin-bottom: 42px;
 }
 
-.kicker {
-    color: #ff8640;
-    font-size: 10px;
-    font-weight: 950;
-    text-transform: uppercase;
-    letter-spacing: 1.8px;
+.section-head h2 {
+    font-size: clamp(38px, 5vw, 72px);
+
+    letter-spacing: -3px;
 }
 
-.section h2 {
-    margin-top: 8px;
-    font-size: 40px;
-    letter-spacing: -2px;
-}
+.section-head p {
+    max-width: 430px;
 
-.section-desc {
-    max-width: 540px;
     color: var(--muted);
-    line-height: 1.65;
-    font-size: 14px;
+
+    line-height: 1.6;
 }
 
-.grid-3 {
+/* =========================
+   NEWS CARDS
+========================= */
+
+.grid {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
-    gap: 14px;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
 }
 
 .card {
-    padding: 23px;
+    position: relative;
 
-    border: 1px solid var(--border);
-    border-radius: 17px;
+    min-height: 220px;
+
+    padding: 28px;
+
+    overflow: hidden;
+
+    border-radius: 24px;
+
+    border: 1px solid var(--line);
 
     background:
         linear-gradient(
             145deg,
-            #10151d,
-            #0a0e14
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.025)
         );
 
-    transition: .25s;
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
+
+.card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -70px;
+    top: -70px;
+
+    background: var(--pink);
+
+    filter: blur(90px);
+
+    opacity: .12;
+
+    transition: .4s ease;
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255,100,0,.25);
-    box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    border-color: rgba(255,46,147,.5);
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.3);
 }
 
-.card-icon {
-    width: 44px;
-    height: 44px;
+.card:hover::before {
+    opacity: .28;
+    transform: scale(1.4);
+}
 
-    display: grid;
-    place-items: center;
+.tag {
+    color: var(--pink);
 
-    margin-bottom: 17px;
+    font-size: 11px;
 
-    border-radius: 12px;
-    border: 1px solid rgba(255,100,0,.16);
-    background: rgba(255,100,0,.08);
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    font-weight: 900;
 }
 
 .card h3 {
-    margin-bottom: 8px;
-    font-size: 16px;
+    margin: 18px 0 10px;
+
+    font-size: 26px;
 }
 
 .card p {
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.65;
+
+    line-height: 1.6;
 }
 
-/* =========================================================
-   MAP
-========================================================= */
+.date {
+    margin-top: 25px;
 
-.map {
-    position: relative;
-    height: 500px;
+    color: #7e7187;
+
+    font-size: 12px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
     overflow: hidden;
 
-    border: 1px solid var(--border);
-    border-radius: 22px;
+    border-radius: 26px;
+
+    border: 1px solid var(--line);
+
+    background: rgba(255,255,255,.035);
+}
+
+.stat {
+    padding: 38px 25px;
+
+    border-right: 1px solid var(--line);
+}
+
+.stat:last-child {
+    border-right: none;
+}
+
+.stat strong {
+    display: block;
+
+    font-size: 48px;
+
+    letter-spacing: -3px;
+}
+
+.stat span {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+/* =========================
+   COUNTRIES
+========================= */
+
+.countries {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, 1fr);
+
+    gap: 12px;
+}
+
+.country {
+    padding: 20px 12px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    border: 1px solid var(--line);
+
+    background: rgba(255,255,255,.035);
+
+    transition: .3s ease;
+}
+
+.country:hover {
+    transform:
+        translateY(-8px)
+        scale(1.03);
+
+    border-color: var(--pink);
 
     background:
-        radial-gradient(
-            circle at 50% 45%,
-            #18222d,
-            #080b10 70%
-        );
+        rgba(255,46,147,.08);
 }
 
-.map-grid {
-    position: absolute;
-    inset: 0;
+.flag {
+    margin-bottom: 10px;
 
-    background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-
-    background-size: 40px 40px;
+    font-size: 35px;
 }
 
-.continent {
-    position: absolute;
-    background: #18232d;
-    box-shadow: 0 20px 35px rgba(0,0,0,.5);
+.country small {
+    color: #aaa;
 }
 
-.c1 {
-    width: 25%;
-    height: 30%;
-    left: 9%;
-    top: 22%;
-    border-radius: 50% 35% 45% 60%;
-    transform: rotate(10deg);
-}
+/* =========================
+   SONGS
+========================= */
 
-.c2 {
-    width: 13%;
-    height: 35%;
-    left: 31%;
-    top: 44%;
-    border-radius: 50% 40% 60% 35%;
-}
-
-.c3 {
-    width: 25%;
-    height: 28%;
-    left: 46%;
-    top: 23%;
-    border-radius: 42% 62% 42% 58%;
-}
-
-.c4 {
-    width: 22%;
-    height: 30%;
-    left: 68%;
-    top: 30%;
-    border-radius: 55% 42% 60% 40%;
-}
-
-.pin {
-    position: absolute;
-
-    width: 13px;
-    height: 13px;
-
-    border-radius: 50%;
-
-    background: var(--orange);
-    border: 3px solid white;
-
-    box-shadow:
-        0 0 0 7px rgba(255,100,0,.12),
-        0 0 25px var(--orange);
-
-    animation: pulse 2s infinite;
-}
-
-.pin.eu {
-    left: 51%;
-    top: 38%;
-}
-
-.pin.na {
-    left: 27%;
-    top: 36%;
-}
-
-.pin.asia {
-    left: 76%;
-    top: 47%;
-}
-
-@keyframes pulse {
-    50% {
-        box-shadow:
-            0 0 0 13px rgba(255,100,0,.02),
-            0 0 35px var(--orange);
-    }
-}
-
-.map-label {
-    position: absolute;
-    padding: 11px;
-
-    background: rgba(7,11,16,.9);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-
-    font-size: 11px;
-}
-
-.map-label.eu {
-    left: 20px;
-    bottom: 20px;
-}
-
-.map-label.na {
-    right: 20px;
-    top: 20px;
-}
-
-/* =========================================================
-   GAMES
-========================================================= */
-
-.games {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.game {
-    padding: 14px 17px;
-
-    border: 1px solid var(--border);
-    border-radius: 11px;
-
-    background: var(--panel);
-
-    color: #c8ced9;
-    transition: .2s;
-}
-
-.game:hover {
-    transform: translateY(-3px);
-    border-color: var(--border-orange);
-}
-
-/* =========================================================
-   PRICING
-========================================================= */
-
-.pricing .card {
-    min-height: 390px;
-}
-
-.popular {
-    border-color: rgba(255,100,0,.35);
-    box-shadow: 0 0 50px rgba(255,90,0,.05);
-}
-
-.badge {
-    float: right;
-
-    color: #ff9d60;
-    background: rgba(255,100,0,.08);
-    border: 1px solid rgba(255,100,0,.2);
-
-    padding: 5px 8px;
-    border-radius: 999px;
-
-    font-size: 9px;
-    font-weight: 950;
-}
-
-.price {
-    margin: 17px 0 5px;
-
-    font-size: 38px;
-    font-weight: 950;
-}
-
-.price small {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 500;
-}
-
-.features {
-    list-style: none;
-    margin: 22px 0;
-
+.song-grid {
     display: grid;
-    gap: 10px;
 
-    color: #b5bdca;
-    font-size: 12px;
-}
+    grid-template-columns:
+        repeat(3, 1fr);
 
-.features li::before {
-    content: "✓";
-    margin-right: 8px;
-    color: var(--green);
-    font-weight: 900;
-}
-
-/* =========================================================
-   REVIEWS
-========================================================= */
-
-.avatar {
-    width: 30px;
-    height: 30px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 9px;
-
-    background: linear-gradient(135deg,#ff7d1e,#ec4100);
-    font-size: 11px;
-}
-
-.review-form {
-    display: grid;
-    gap: 10px;
-
-    max-width: 650px;
-    margin-top: 30px;
-}
-
-input,
-textarea,
-select {
-    width: 100%;
-
-    padding: 12px;
-
-    color: white;
-    background: #090d13;
-
-    border: 1px solid var(--border);
-    border-radius: 9px;
-
-    outline: none;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-    border-color: rgba(255,100,0,.5);
-}
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer {
-    padding: 55px 0;
-    border-top: 1px solid var(--border);
-
-    color: #727c8b;
-    font-size: 12px;
-}
-
-.footer-inner {
-    display: flex;
-    justify-content: space-between;
     gap: 20px;
 }
 
-/* =========================================================
-   PANEL
-========================================================= */
+.song {
+    min-height: 280px;
 
-#panel {
-    min-height: 100vh;
-    background: #080a0f;
-}
-
-.panel-shell {
-    min-height: 100vh;
-    display: flex;
-}
-
-.sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-
-    width: 245px;
-
-    padding: 17px 12px;
-
-    overflow-y: auto;
-
-    background: #0b0e14;
-    border-right: 1px solid var(--border);
-
-    z-index: 100;
-}
-
-.side-logo {
-    padding: 8px 10px 22px;
-}
-
-.server-picker {
-    display: flex;
-    justify-content: space-between;
-
-    padding: 11px;
-
-    margin-bottom: 18px;
-
-    border: 1px solid var(--border);
-    border-radius: 11px;
-
-    background: #11161e;
-
-    font-size: 12px;
-}
-
-.side-label {
-    margin: 18px 8px 6px;
-
-    color: #596477;
-
-    font-size: 9px;
-    font-weight: 950;
-
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-}
-
-.side-item {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-
-    padding: 10px 11px;
-    margin: 2px 0;
-
-    border-radius: 8px;
-
-    color: #8f99a9;
-    font-size: 12px;
-
-    cursor: pointer;
-
-    transition: .15s;
-}
-
-.side-item:hover {
-    color: white;
-    background: rgba(255,255,255,.04);
-}
-
-.side-item.active {
-    color: white;
-    background: rgba(255,100,0,.09);
-    box-shadow: inset 2px 0 var(--orange);
-}
-
-.panel-main {
-    width: calc(100% - 245px);
-    margin-left: 245px;
-}
-
-.topbar {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-
-    height: 65px;
-
-    padding: 0 24px;
+    padding: 0;
 
     display: flex;
-    align-items: center;
-    justify-content: space-between;
 
-    background: rgba(8,10,15,.88);
-    border-bottom: 1px solid var(--border);
+    flex-direction: column;
 
-    backdrop-filter: blur(16px);
+    justify-content: end;
+
+    overflow: hidden;
 }
 
-.top-search {
-    width: 310px;
+.song .cover {
+    position: absolute;
+
+    inset: 0 0 auto;
+
+    height: 180px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--pink),
+            var(--purple),
+            var(--cyan)
+        );
 }
 
-.top-right {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.song .cover::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            transparent,
+            rgba(7,3,12,.95)
+        );
 }
 
-.panel-content {
-    width: min(1450px,100%);
-    margin: auto;
+.song-content {
+    position: relative;
+
+    z-index: 2;
 
     padding: 25px;
 }
 
-.panel-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* =========================
+   RULES
+========================= */
 
-    gap: 15px;
-
-    margin-bottom: 22px;
-}
-
-.panel-title h1 {
-    margin: 4px 0;
-
-    font-size: 28px;
-    letter-spacing: -1px;
-}
-
-.panel-title small {
-    color: #697486;
-}
-
-.controls {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 7px;
-}
-
-.control {
-    padding: 8px 11px;
-
-    color: white;
-    background: #141a22;
-
-    border: 1px solid var(--border);
-    border-radius: 8px;
-
-    font-size: 11px;
-}
-
-.control.start {
-    color: #04130a;
-    background: #29c575;
-    border: 0;
-}
-
-.status {
-    padding: 6px 9px;
-
-    border-radius: 999px;
-
-    color: var(--green);
-    background: rgba(66,223,140,.07);
-    border: 1px solid rgba(66,223,140,.15);
-
-    font-size: 10px;
-}
-
-.status.offline {
-    color: var(--red);
-    background: rgba(255,80,100,.07);
-    border-color: rgba(255,80,100,.15);
-}
-
-.stats {
+.rules {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap: 11px;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 20px;
 }
 
-.stat {
-    padding: 16px;
+.rule {
+    padding: 28px;
 
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    border-left:
+        2px solid var(--pink);
 
-    background: var(--panel);
+    border-radius:
+        0 18px 18px 0;
+
+    background:
+        rgba(255,255,255,.035);
 }
 
-.stat-label {
-    display: flex;
-    justify-content: space-between;
-
-    color: #7e8999;
-
-    font-size: 9px;
-    font-weight: 900;
+.rule b {
+    font-size: 18px;
 }
 
-.stat-value {
-    margin-top: 9px;
-
-    font-size: 23px;
-    font-weight: 950;
-}
-
-.progress {
-    height: 4px;
-
-    margin-top: 12px;
-
-    overflow: hidden;
-
-    background: #1b222c;
-    border-radius: 99px;
-}
-
-.progress span {
-    display: block;
-
-    height: 100%;
-
-    background: linear-gradient(
-        90deg,
-        #ff4d00,
-        #ff9d5d
-    );
-}
-
-.panel-grid {
-    display: grid;
-    grid-template-columns: 1.65fr 1fr;
-    gap: 13px;
-
-    margin-top: 13px;
-}
-
-.p-card {
-    overflow: hidden;
-
-    border: 1px solid var(--border);
-    border-radius: 13px;
-
-    background: var(--panel);
-}
-
-.p-head {
-    height: 46px;
-
-    padding: 0 14px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-bottom: 1px solid var(--border);
-
-    font-size: 11px;
-    font-weight: 900;
-}
-
-.resource-chart {
-    height: 245px;
-
-    padding: 18px;
-
-    display: flex;
-    align-items: end;
-    gap: 5px;
-}
-
-.resource-bar {
-    flex: 1;
-
-    min-height: 10px;
-
-    border-radius: 4px 4px 1px 1px;
-
-    background: linear-gradient(
-        #ff9b5a,
-        #ff4d00
-    );
-
-    opacity: .75;
-}
-
-.console {
-    height: 290px;
-
-    padding: 13px;
-
-    overflow: auto;
-
-    background: #080b10;
-
-    color: #98a2b2;
-
-    font:
-        11px/1.9
-        ui-monospace,
-        SFMono-Regular,
-        Consolas,
-        monospace;
-}
-
-.log-ok {
-    color: #62df98;
-}
-
-.log-warn {
-    color: #ffc45e;
-}
-
-.log-orange {
-    color: #ff8d4e;
-}
-
-.player-list {
-    padding: 6px;
-}
-
-.player {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-
-    padding: 10px;
-
-    border-radius: 8px;
-
-    font-size: 12px;
-}
-
-.player:hover {
-    background: rgba(255,255,255,.03);
-}
-
-.player-role {
-    margin-left: auto;
-
-    color: #697486;
-
-    font-size: 9px;
-}
-
-.player-dot {
-    width: 6px;
-    height: 6px;
-
-    border-radius: 50%;
-
-    background: var(--green);
-}
-
-.file-row {
-    display: flex;
-    justify-content: space-between;
-
-    padding: 13px 15px;
-
-    border-bottom: 1px solid rgba(255,255,255,.04);
-
-    color: #c7ced9;
-
-    font-size: 12px;
-}
-
-.file-row:last-child {
-    border-bottom: 0;
-}
-
-.file-row:hover {
-    background: rgba(255,255,255,.03);
-}
-
-.tab {
-    display: none;
-}
-
-.tab.active {
-    display: block;
-}
-
-.chat-box {
-    height: 430px;
-}
-
-.chat-messages {
-    height: 375px;
-
-    padding: 15px;
-
-    overflow: auto;
-
-    background: #080b10;
-
-    font-size: 12px;
-    line-height: 2;
-}
-
-.chat-input {
-    display: flex;
-    gap: 8px;
-
-    padding: 9px;
-
-    border-top: 1px solid var(--border);
-}
-
-.form {
-    display: grid;
-    gap: 12px;
-
-    padding: 18px;
-}
-
-.form label {
-    display: grid;
-    gap: 6px;
-
-    color: #9da6b5;
-
-    font-size: 11px;
-}
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.modal {
-    position: fixed;
-    inset: 0;
-
-    z-index: 500;
-
-    display: grid;
-    place-items: center;
-
-    padding: 15px;
-
-    background: rgba(0,0,0,.75);
-}
-
-.modal-card {
-    width: min(520px,100%);
-
-    padding: 23px;
-
-    border: 1px solid var(--border);
-    border-radius: 17px;
-
-    background: #0e131a;
-
-    box-shadow: var(--shadow);
-}
-
-.modal-card h2 {
-    margin-bottom: 7px;
-}
-
-.modal-card p {
-    margin-bottom: 18px;
+.rule p {
+    margin-top: 8px;
 
     color: var(--muted);
 
-    font-size: 12px;
     line-height: 1.6;
 }
 
-.modal-actions {
+/* =========================
+   CTA
+========================= */
+
+.cta {
+    position: relative;
+
+    margin:
+        50px 7%
+        100px;
+
+    padding:
+        80px 7%;
+
+    overflow: hidden;
+
+    text-align: center;
+
+    border-radius: 35px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255,46,147,.22),
+            rgba(157,53,255,.16),
+            rgba(0,200,255,.1)
+        );
+}
+
+.cta::before {
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius: 50%;
+
+    background: var(--pink);
+
+    filter: blur(130px);
+
+    opacity: .16;
+
+    animation: ctaPulse 5s infinite;
+}
+
+@keyframes ctaPulse {
+    50% {
+        transform:
+            translate(-50%,-50%)
+            scale(1.4);
+    }
+}
+
+.cta > * {
+    position: relative;
+}
+
+.cta h2 {
+    margin-bottom: 20px;
+
+    font-size:
+        clamp(40px, 6vw, 82px);
+
+    letter-spacing: -4px;
+}
+
+.cta p {
+    margin-bottom: 30px;
+
+    color: var(--muted);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    padding: 45px 7%;
+
     display: flex;
-    justify-content: flex-end;
-    gap: 8px;
 
-    margin-top: 18px;
+    justify-content: space-between;
+
+    border-top:
+        1px solid var(--line);
+
+    color: #807489;
+
+    font-size: 13px;
 }
 
-/* =========================================================
-   TOAST
-========================================================= */
-
-.toast {
-    position: fixed;
-    right: 22px;
-    bottom: 22px;
-
-    z-index: 9999;
-
-    padding: 13px 16px;
-
-    border: 1px solid rgba(255,255,255,.1);
-    border-radius: 10px;
-
-    background: #151b24;
-
-    box-shadow: var(--shadow);
-
-    font-size: 12px;
-
-    transform: translateY(30px);
-    opacity: 0;
-
-    transition: .25s;
-}
-
-.toast.show {
-    transform: none;
-    opacity: 1;
-}
-
-/* =========================================================
-   SCROLL ANIMATION
-========================================================= */
+/* =========================
+   REVEAL
+========================= */
 
 .reveal {
     opacity: 0;
-    transform: translateY(25px);
+
+    transform:
+        translateY(45px);
 
     transition:
-        opacity .7s ease,
-        transform .7s ease;
+        opacity .8s ease,
+        transform .8s ease;
 }
 
-.reveal.visible {
+.reveal.show {
     opacity: 1;
-    transform: none;
+
+    transform:
+        translateY(0);
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* =========================
+   RESPONSIVE
+========================= */
 
-@media(max-width:900px) {
+@media(max-width: 900px) {
 
-    .nav-links {
+    nav {
         display: none;
     }
 
-    .hero-grid {
-        grid-template-columns: 1fr;
+    .menu {
+        display: block;
+
+        margin-left: auto;
     }
 
-    .grid-3 {
-        grid-template-columns: 1fr 1fr;
-    }
+    nav.open {
+        position: absolute;
 
-    .panel-grid {
-        grid-template-columns: 1fr;
-    }
+        top: 78px;
+        left: 0;
 
-    .stats {
-        grid-template-columns: 1fr 1fr;
-    }
+        width: 100%;
 
-    .sidebar {
-        width: 68px;
-    }
+        padding: 25px;
 
-    .side-text,
-    .side-label,
-    .server-picker span:last-child {
-        display: none;
-    }
+        display: flex;
 
-    .side-item {
-        justify-content: center;
-    }
+        flex-direction: column;
 
-    .server-picker {
-        justify-content: center;
-    }
+        background:
+            rgba(7,3,12,.95);
 
-    .panel-main {
-        width: calc(100% - 68px);
-        margin-left: 68px;
-    }
-}
-
-@media(max-width:620px) {
-
-    .container {
-        width: calc(100% - 22px);
+        backdrop-filter: blur(20px);
     }
 
     .hero {
-        padding-top: 125px;
-    }
-
-    .hero h1 {
-        font-size: 49px;
-        letter-spacing: -3px;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-    }
-
-    .grid-3 {
         grid-template-columns: 1fr;
+
+        padding-top: 130px;
+    }
+
+    .visual {
+        height: 400px;
+    }
+
+    .grid,
+    .song-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .countries {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .stats {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .stat:nth-child(2) {
+        border-right: none;
+    }
+
+    .stat {
+        border-bottom:
+            1px solid var(--line);
+    }
+
+    .rules {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+
+    h1 {
+        font-size: 64px;
+        letter-spacing: -4px;
     }
 
     .section {
-        padding: 70px 0;
+        padding: 85px 6%;
     }
 
     .section-head {
         display: block;
     }
 
-    .section-desc {
-        margin-top: 12px;
+    .section-head p {
+        margin-top: 15px;
     }
 
-    .map {
+    .grid,
+    .song-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .countries {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .visual {
+        height: 330px;
+    }
+
+    .ring.one {
+        width: 300px;
+        height: 300px;
+    }
+
+    .ring.two {
+        width: 350px;
+        height: 220px;
+    }
+
+    .ring.three {
+        width: 220px;
         height: 350px;
     }
 
-    .floating-card {
-        right: 0;
+    .core {
+        width: 160px;
+        height: 160px;
     }
 
-    .top-search {
-        display: none;
+    .stats {
+        grid-template-columns:
+            1fr 1fr;
     }
 
-    .panel-content {
-        padding: 14px;
+    .stat strong {
+        font-size: 35px;
     }
 
-    .panel-title {
-        flex-direction: column;
-        align-items: flex-start;
+    .cta {
+        margin:
+            20px 6%
+            70px;
+
+        padding:
+            55px 25px;
     }
 
-    .footer-inner {
+    footer {
         display: block;
-    }
 
-    .footer-inner span {
-        display: block;
-        margin-bottom: 8px;
+        line-height: 2;
     }
 }
 </style>
@@ -1452,715 +1100,269 @@ select:focus {
 
 <body>
 
-<!-- ======================================================
-     WEBSITE
-====================================================== -->
+<div class="blob one"></div>
+<div class="blob two"></div>
+<div class="blob three"></div>
 
-<div id="website">
+<div id="particles"></div>
 
-<header class="nav">
-    <div class="container nav-inner">
+<header id="header">
 
-        <a class="logo" href="#">
-            <span class="logo-icon"></span>
-            NetherHost
-        </a>
+    <a href="#home" class="logo">
+        ERA<span>VISION</span>
+    </a>
 
-        <nav class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#locations">Locations</a>
-            <a href="#games">Games</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#reviews">Reviews</a>
-        </nav>
+    <nav id="nav">
 
-        <div class="nav-actions">
-            <button class="btn" onclick="openPanel()">
-                Panel
-            </button>
+        <a href="#news">News</a>
+        <a href="#edition">Eravision 01</a>
+        <a href="#countries">Countries</a>
+        <a href="#songs">Songs</a>
+        <a href="#rules">Rules</a>
+        <a href="#about">About</a>
+        <a href="#claim">Claim a Country</a>
 
-            <button class="btn primary" onclick="openCreate()">
-                Create Server
-            </button>
-        </div>
+    </nav>
 
-    </div>
+    <button class="menu" id="menu">
+        ☰
+    </button>
+
 </header>
 
+<main>
 
 <!-- HERO -->
 
-<section class="hero">
+<section class="hero" id="home">
 
-    <div class="container hero-grid">
+    <div>
 
-        <div class="reveal">
+        <div class="eyebrow">
+            Welcome to
+            <span>Eravision 01</span>
+        </div>
 
-            <span class="eyebrow">
-                <span class="live-dot"></span>
-                All systems operational
+        <h1>
+
+            <span class="gradient-text">
+                The new
             </span>
 
-            <h1>
-                Host your world.
-                <br>
-                <span class="gradient">
-                    No limits.
-                </span>
-            </h1>
+            <br>
 
-            <p class="hero-copy">
-                High-performance game hosting with instant deployment,
-                powerful hardware, global locations and a control panel
-                designed for real server owners.
-            </p>
+            <span class="outline">
+                era begins.
+            </span>
 
-            <div class="hero-buttons">
+        </h1>
 
-                <button
-                    class="btn primary"
-                    onclick="openCreate()">
-                    Create your server →
-                </button>
+        <p>
+            Eravision is a new song contest built around
+            music, creativity, unforgettable performances
+            and a community that wants to make something bigger.
+        </p>
 
-                <button
-                    class="btn"
-                    onclick="openPanel()">
-                    Open NetherPanel
-                </button>
+        <div class="actions">
 
-            </div>
+            <a
+                href="#claim"
+                class="btn primary magnetic"
+            >
+                Claim a Country
+            </a>
 
-            <div class="trust">
-
-                <span>
-                    <span class="stars">★★★★★</span>
-                    4.9/5 rating
-                </span>
-
-                <span>
-                    20,000+ players worldwide
-                </span>
-
-                <span>
-                    800 Gbps DDoS protection
-                </span>
-
-            </div>
+            <a
+                href="#edition"
+                class="btn magnetic"
+            >
+                Explore Eravision 01
+            </a>
 
         </div>
 
+    </div>
 
-        <div class="hero-visual reveal">
+    <div
+        class="visual"
+        id="visual"
+    >
 
-            <div class="hero-glow"></div>
+        <div class="ring one"></div>
+        <div class="ring two"></div>
+        <div class="ring three"></div>
 
-            <div class="preview">
-
-                <div class="server-row">
-
-                    <div>
-                        <div class="server-name">
-                            Survival SMP
-                        </div>
-
-                        <div class="server-sub">
-                            Minecraft · Europe
-                        </div>
-                    </div>
-
-                    <span class="online">
-                        ● ONLINE
-                    </span>
-
-                </div>
-
-
-                <div class="mini-stats">
-
-                    <div class="mini-stat">
-                        <b id="heroCpu">34%</b>
-                        <span>CPU</span>
-                    </div>
-
-                    <div class="mini-stat">
-                        <b>1.24 GB</b>
-                        <span>MEMORY</span>
-                    </div>
-
-                    <div class="mini-stat">
-                        <b>8/50</b>
-                        <span>PLAYERS</span>
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="muted"
-                    style="font-size:10px">
-                    CPU usage · live
-                </div>
-
-                <div
-                    class="chart"
-                    id="heroChart">
-                </div>
-
-            </div>
-
-
-            <div class="floating-card">
-
-                <div
-                    class="muted"
-                    style="font-size:10px">
-                    NETWORK LATENCY
-                </div>
-
-                <div
-                    style="
-                    font-size:25px;
-                    font-weight:950;
-                    margin:4px 0;">
-                    6 ms
-                </div>
-
-                <span class="online">
-                    ● Frankfurt · Optimal
-                </span>
-
-            </div>
-
-        </div>
+        <div class="core"></div>
 
     </div>
 
 </section>
 
 
-<!-- FEATURES -->
+<!-- NEWS -->
 
 <section
     class="section"
-    id="features">
+    id="news"
+>
 
-    <div class="container">
+    <div class="section-head reveal">
 
-        <div class="section-head reveal">
+        <h2>
+            Latest News
+        </h2>
 
-            <div>
-
-                <div class="kicker">
-                    Built different
-                </div>
-
-                <h2>
-                    Everything you need.
-                </h2>
-
-            </div>
-
-            <p class="section-desc">
-                From a private SMP to a growing community,
-                manage everything from one clean dashboard.
-            </p>
-
-        </div>
-
-
-        <div class="grid-3">
-
-            <article class="card reveal">
-                <div class="card-icon">⚡</div>
-                <h3>Instant deployment</h3>
-                <p>
-                    Choose your game, plan and location.
-                    Your server is ready in seconds.
-                </p>
-            </article>
-
-
-            <article class="card reveal">
-                <div class="card-icon">🛡</div>
-                <h3>DDoS protection</h3>
-                <p>
-                    Network-level protection helps keep
-                    malicious traffic away from your server.
-                </p>
-            </article>
-
-
-            <article class="card reveal">
-                <div class="card-icon">📈</div>
-                <h3>Live performance</h3>
-                <p>
-                    Monitor CPU, memory, storage,
-                    traffic and players in real time.
-                </p>
-            </article>
-
-
-            <article class="card reveal">
-                <div class="card-icon">💾</div>
-                <h3>Automatic backups</h3>
-                <p>
-                    Create schedules and restore your world
-                    without complicated downloads.
-                </p>
-            </article>
-
-
-            <article class="card reveal">
-                <div class="card-icon">🔌</div>
-                <h3>Plugins & mods</h3>
-                <p>
-                    Manage plugins, startup settings
-                    and server software directly in the panel.
-                </p>
-            </article>
-
-
-            <article class="card reveal">
-                <div class="card-icon">💬</div>
-                <h3>Community chat</h3>
-                <p>
-                    Talk with players and staff without
-                    leaving your hosting dashboard.
-                </p>
-            </article>
-
-        </div>
+        <p>
+            Everything happening around
+            the first Eravision edition.
+        </p>
 
     </div>
 
-</section>
+    <div class="grid">
 
+        <article class="card reveal">
 
-<!-- MAP -->
-
-<section
-    class="section"
-    id="locations">
-
-    <div class="container">
-
-        <div class="section-head reveal">
-
-            <div>
-
-                <div class="kicker">
-                    Global network
-                </div>
-
-                <h2>
-                    Your players. Closer.
-                </h2>
-
-            </div>
-
-            <p class="section-desc">
-                Pick the region that gives your community
-                the best latency.
-            </p>
-
-        </div>
-
-
-        <div class="map reveal">
-
-            <div class="map-grid"></div>
-
-            <div class="continent c1"></div>
-            <div class="continent c2"></div>
-            <div class="continent c3"></div>
-            <div class="continent c4"></div>
-
-            <i class="pin eu"></i>
-            <i class="pin na"></i>
-            <i class="pin asia"></i>
-
-
-            <div class="map-label eu">
-                <b>EU · Frankfurt</b>
-                <br>
-                <span class="green">
-                    6 ms · Optimal
-                </span>
-            </div>
-
-
-            <div class="map-label na">
-                <b>NA · Texas</b>
-                <br>
-                <span class="green">
-                    14 ms · Optimal
-                </span>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- GAMES -->
-
-<section
-    class="section"
-    id="games">
-
-    <div class="container">
-
-        <div class="section-head reveal">
-
-            <div>
-
-                <div class="kicker">
-                    One platform
-                </div>
-
-                <h2>
-                    Host more than Minecraft.
-                </h2>
-
-            </div>
-
-            <p class="section-desc">
-                Select your software when you create a server.
-            </p>
-
-        </div>
-
-
-        <div class="games reveal">
-
-            <div class="game">
-                ⛏ Minecraft
-            </div>
-
-            <div class="game">
-                🔀 Velocity Proxy
-            </div>
-
-            <div class="game">
-                🔫 Counter-Strike 2
-            </div>
-
-            <div class="game">
-                🎯 Team Fortress 2
-            </div>
-
-            <div class="game">
-                🚀 Among Us
-            </div>
-
-            <div class="game">
-                🤖 Discord Bot
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- PRICING -->
-
-<section
-    class="section"
-    id="pricing">
-
-    <div class="container">
-
-        <div class="section-head reveal">
-
-            <div>
-
-                <div class="kicker">
-                    Simple pricing
-                </div>
-
-                <h2>
-                    Start free. Scale later.
-                </h2>
-
-            </div>
-
-            <p class="section-desc">
-                Transparent plans with resources you can understand.
-            </p>
-
-        </div>
-
-
-        <div class="grid-3 pricing">
-
-            <article class="card reveal">
-
-                <h3>
-                    Free Server
-                </h3>
-
-                <div class="price">
-                    $0
-                    <small>/ forever</small>
-                </div>
-
-                <p>
-                    Perfect for friends and small worlds.
-                </p>
-
-                <ul class="features">
-                    <li>2 GB Dedicated RAM</li>
-                    <li>10 GB NVMe Storage</li>
-                    <li>Default CPU</li>
-                    <li>Free forever</li>
-                    <li>EU / NA locations</li>
-                </ul>
-
-                <button
-                    class="btn primary"
-                    style="width:100%"
-                    onclick="openCreate('Minecraft','Free · 2 GB')">
-                    Create free server
-                </button>
-
-            </article>
-
-
-            <article class="card popular reveal">
-
-                <span class="badge">
-                    POPULAR
-                </span>
-
-                <h3>
-                    4 GB Server
-                </h3>
-
-                <div class="price">
-                    $5.99
-                    <small>/ month</small>
-                </div>
-
-                <p>
-                    More power for growing communities.
-                </p>
-
-                <ul class="features">
-                    <li>4 GB Dedicated RAM</li>
-                    <li>20 GB NVMe Storage</li>
-                    <li>Default CPU</li>
-                    <li>Priority support</li>
-                    <li>EU / NA locations</li>
-                </ul>
-
-                <button
-                    class="btn primary"
-                    style="width:100%"
-                    onclick="openCreate('Minecraft','4 GB · $5.99/month')">
-                    Choose 4 GB
-                </button>
-
-            </article>
-
-
-            <article class="card reveal">
-
-                <h3>
-                    Custom
-                </h3>
-
-                <div class="price">
-                    $1.49
-                    <small>/ GB+</small>
-                </div>
-
-                <p>
-                    Build exactly what your project needs.
-                </p>
-
-                <ul class="features">
-                    <li>Custom RAM</li>
-                    <li>Custom NVMe storage</li>
-                    <li>CPU upgrades</li>
-                    <li>Choose software</li>
-                    <li>Choose location</li>
-                </ul>
-
-                <button
-                    class="btn"
-                    style="width:100%"
-                    onclick="openCreate()">
-                    Customize server
-                </button>
-
-            </article>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- REVIEWS -->
-
-<section
-    class="section"
-    id="reviews">
-
-    <div class="container">
-
-        <div class="section-head reveal">
-
-            <div>
-
-                <div class="kicker">
-                    Community
-                </div>
-
-                <h2>
-                    Loved by server owners.
-                </h2>
-
-            </div>
-
-            <div class="stars">
-                ★★★★★
-            </div>
-
-        </div>
-
-
-        <div
-            class="grid-3"
-            id="reviewList">
-
-            <article class="card reveal">
-
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;">
-
-                    <b class="avatar">
-                        A
-                    </b>
-
-                    <span class="stars">
-                        ★★★★★
-                    </span>
-
-                </div>
-
-                <p style="
-                    margin:16px 0;
-                    color:#c1c8d4;">
-
-                    “The panel feels incredibly clean.
-                    Everything I need is in one place.”
-
-                </p>
-
-                <small class="muted">
-                    Alex · Minecraft SMP
-                </small>
-
-            </article>
-
-
-            <article class="card reveal">
-
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;">
-
-                    <b class="avatar">
-                        M
-                    </b>
-
-                    <span class="stars">
-                        ★★★★★
-                    </span>
-
-                </div>
-
-                <p style="
-                    margin:16px 0;
-                    color:#c1c8d4;">
-
-                    “Setup took less than a minute
-                    and the resource graphs are great.”
-
-                </p>
-
-                <small class="muted">
-                    Mika · Community owner
-                </small>
-
-            </article>
-
-
-            <article class="card reveal">
-
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;">
-
-                    <b class="avatar">
-                        J
-                    </b>
-
-                    <span class="stars">
-                        ★★★★<span style="color:#555">★</span>
-                    </span>
-
-                </div>
-
-                <p style="
-                    margin:16px 0;
-                    color:#c1c8d4;">
-
-                    “Fast EU routing and a modern interface.
-                    Exactly what I wanted.”
-
-                </p>
-
-                <small class="muted">
-                    Jordan · Server owner
-                </small>
-
-            </article>
-
-        </div>
-
-
-        <div class="review-form reveal">
+            <span class="tag">
+                Announcement
+            </span>
 
             <h3>
-                Leave a review
+                Eravision is back.
             </h3>
 
-            <input
-                id="reviewName"
-                placeholder="Your name">
+            <p>
+                A new name, a new era and
+                a new direction for the contest.
+            </p>
 
-            <textarea
-                id="reviewText"
-                rows="4"
-                placeholder="Tell us about your experience..."></textarea>
+            <div class="date">
+                ERAVISION 01
+            </div>
 
-            <button
-                class="btn primary"
-                onclick="addReview()">
-                Publish review
-            </button>
+        </article>
+
+
+        <article class="card reveal">
+
+            <span class="tag">
+                Countries
+            </span>
+
+            <h3>
+                Country claiming opens.
+            </h3>
+
+            <p>
+                Delegations can secure their
+                country before the 26-country
+                limit is reached.
+            </p>
+
+            <div class="date">
+                COMING SOON
+            </div>
+
+        </article>
+
+
+        <article class="card reveal">
+
+            <span class="tag">
+                Rules
+            </span>
+
+            <h3>
+                New rules. More activity.
+            </h3>
+
+            <p>
+                A cleaner and more structured
+                contest experience for everyone.
+            </p>
+
+            <div class="date">
+                ERAVISION 01
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- EDITION -->
+
+<section
+    class="section"
+    id="edition"
+>
+
+    <div class="section-head reveal">
+
+        <h2>
+            Eravision 01
+        </h2>
+
+        <p>
+            The first chapter of the
+            new Eravision era.
+        </p>
+
+    </div>
+
+
+    <div class="stats reveal">
+
+        <div class="stat">
+
+            <strong>
+                26
+            </strong>
+
+            <span>
+                Maximum countries
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                01
+            </strong>
+
+            <span>
+                First edition
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                ∞
+            </strong>
+
+            <span>
+                Creative freedom
+            </span>
+
+        </div>
+
+
+        <div class="stat">
+
+            <strong>
+                LIVE
+            </strong>
+
+            <span>
+                Contest experience
+            </span>
 
         </div>
 
@@ -2169,1744 +1371,428 @@ select:focus {
 </section>
 
 
-<footer class="footer">
+<!-- COUNTRIES -->
 
-    <div class="container footer-inner">
+<section
+    class="section"
+    id="countries"
+>
 
-        <span>
-            © 2026 NetherHost · Game hosting made simple.
-        </span>
+    <div class="section-head reveal">
 
-        <span>
-            Status · Support · Panel · Terms
-        </span>
+        <h2>
+            Countries
+        </h2>
 
+        <p>
+            Meet the delegations taking
+            part in Eravision 01.
+        </p>
+
+    </div>
+
+
+    <div class="countries">
+
+        <div class="country reveal">
+            <div class="flag">🇸🇪</div>
+            <small>Sweden</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇳🇴</div>
+            <small>Norway</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇫🇮</div>
+            <small>Finland</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇩🇰</div>
+            <small>Denmark</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇮🇸</div>
+            <small>Iceland</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇫🇷</div>
+            <small>France</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇬🇧</div>
+            <small>United Kingdom</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇮🇹</div>
+            <small>Italy</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇪🇸</div>
+            <small>Spain</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇩🇪</div>
+            <small>Germany</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🇳🇱</div>
+            <small>Netherlands</small>
+        </div>
+
+        <div class="country reveal">
+            <div class="flag">🌍</div>
+            <small>More soon</small>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SONGS -->
+
+<section
+    class="section"
+    id="songs"
+>
+
+    <div class="section-head reveal">
+
+        <h2>
+            Songs & Artists
+        </h2>
+
+        <p>
+            Music is at the heart
+            of Eravision.
+        </p>
+
+    </div>
+
+
+    <div class="song-grid">
+
+        <article class="card song reveal">
+
+            <div class="cover"></div>
+
+            <div class="song-content">
+
+                <span class="tag">
+                    Sweden
+                </span>
+
+                <h3>
+                    Song Title
+                </h3>
+
+                <p>
+                    Artist Name
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article class="card song reveal">
+
+            <div class="cover"></div>
+
+            <div class="song-content">
+
+                <span class="tag">
+                    Norway
+                </span>
+
+                <h3>
+                    Song Title
+                </h3>
+
+                <p>
+                    Artist Name
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article class="card song reveal">
+
+            <div class="cover"></div>
+
+            <div class="song-content">
+
+                <span class="tag">
+                    Finland
+                </span>
+
+                <h3>
+                    Song Title
+                </h3>
+
+                <p>
+                    Artist Name
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- RULES -->
+
+<section
+    class="section"
+    id="rules"
+>
+
+    <div class="section-head reveal">
+
+        <h2>
+            Rules
+        </h2>
+
+        <p>
+            Simple, clear and built
+            to keep the contest moving.
+        </p>
+
+    </div>
+
+
+    <div class="rules">
+
+        <div class="rule reveal">
+
+            <b>
+                Maximum 26 countries
+            </b>
+
+            <p>
+                Eravision 01 will have a
+                maximum of 26 participating
+                countries.
+            </p>
+
+        </div>
+
+
+        <div class="rule reveal">
+
+            <b>
+                No semi-finals — for now
+            </b>
+
+            <p>
+                The first edition will use
+                one main contest instead
+                of semi-finals.
+            </p>
+
+        </div>
+
+
+        <div class="rule reveal">
+
+            <b>
+                Stricter country claiming
+            </b>
+
+            <p>
+                Country claims will be
+                managed more carefully
+                to keep participation fair.
+            </p>
+
+        </div>
+
+
+        <div class="rule reveal">
+
+            <b>
+                More activity
+            </b>
+
+            <p>
+                Delegations are expected
+                to stay active throughout
+                the contest period.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section
+    class="section"
+    id="about"
+>
+
+    <div class="section-head reveal">
+
+        <h2>
+            A new era.
+        </h2>
+
+        <p>
+            Eravision combines the energy
+            of a live song contest with
+            a modern digital community.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section
+    class="cta"
+    id="claim"
+>
+
+    <h2 class="reveal">
+        Ready to enter?
+    </h2>
+
+    <p class="reveal">
+        Join the Eravision 01 journey
+        and claim your country.
+    </p>
+
+    <a
+        href="#"
+        class="btn primary magnetic reveal"
+    >
+        Claim a Country
+    </a>
+
+</section>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div>
+        © 2026 Eravision
+    </div>
+
+    <div>
+        Music • Creativity • Community
     </div>
 
 </footer>
 
-</div>
-
-
-<!-- ======================================================
-     PANEL
-====================================================== -->
-
-<div
-    id="panel"
-    class="hidden">
-
-<div class="panel-shell">
-
-<!-- SIDEBAR -->
-
-<aside class="sidebar">
-
-    <div class="side-logo">
-
-        <a
-            class="logo"
-            href="#"
-            onclick="closePanel();return false;">
-
-            <span class="logo-icon"></span>
-
-            <span class="side-text">
-                NetherHost
-            </span>
-
-        </a>
-
-    </div>
-
-
-    <div class="server-picker">
-
-        <span>
-            🟧 Survival SMP
-        </span>
-
-        <span>
-            ⌄
-        </span>
-
-    </div>
-
-
-    <div class="side-label">
-        Manage
-    </div>
-
-
-    <div
-        class="side-item active"
-        data-tab="overview">
-
-        ◉
-        <span class="side-text">
-            Overview
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="console">
-
-        ▣
-        <span class="side-text">
-            Console
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="files">
-
-        ▤
-        <span class="side-text">
-            Files
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="players">
-
-        ♟
-        <span class="side-text">
-            Players
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="backups">
-
-        ◫
-        <span class="side-text">
-            Backups
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="plugins">
-
-        ◈
-        <span class="side-text">
-            Plugins
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="database">
-
-        ◉
-        <span class="side-text">
-            Database
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="schedule">
-
-        ◷
-        <span class="side-text">
-            Schedules
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="settings">
-
-        ⚙
-        <span class="side-text">
-            Settings
-        </span>
-
-    </div>
-
-
-    <div class="side-label">
-        Community
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="community">
-
-        ◌
-        <span class="side-text">
-            Community Chat
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="staff">
-
-        ♙
-        <span class="side-text">
-            Staff Chat
-        </span>
-
-    </div>
-
-
-    <div class="side-label">
-        Account
-    </div>
-
-
-    <div
-        class="side-item"
-        data-tab="billing">
-
-        $
-        <span class="side-text">
-            Billing
-        </span>
-
-    </div>
-
-
-    <div
-        class="side-item"
-        onclick="closePanel()">
-
-        ←
-        <span class="side-text">
-            Website
-        </span>
-
-    </div>
-
-</aside>
-
-
-<!-- PANEL MAIN -->
-
-<main class="panel-main">
-
-<header class="topbar">
-
-    <input
-        class="top-search"
-        id="panelSearch"
-        placeholder="⌕ Search or press Ctrl + K">
-
-    <div class="top-right">
-
-        <span class="pill">
-            ● EU-FRA-04
-        </span>
-
-        <span class="pill">
-            🔔
-        </span>
-
-        <span class="avatar">
-            T
-        </span>
-
-    </div>
-
-</header>
-
-
-<div class="panel-content">
-
-
-<!-- OVERVIEW -->
-
-<div
-    class="tab active"
-    id="tab-overview">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                NetherPanel
-            </div>
-
-            <h1>
-                Survival SMP
-            </h1>
-
-            <small>
-                play.survival.netherhost.net
-            </small>
-
-        </div>
-
-
-        <div class="controls">
-
-            <span
-                id="status"
-                class="status">
-
-                ● ONLINE
-
-            </span>
-
-            <button
-                class="control start"
-                onclick="serverAction('started')">
-
-                ▶ Start
-
-            </button>
-
-            <button
-                class="control"
-                onclick="serverAction('restarted')">
-
-                ↻ Restart
-
-            </button>
-
-            <button
-                class="control"
-                onclick="serverAction('stopped')">
-
-                ■ Stop
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <div class="stats">
-
-        <div class="stat">
-
-            <div class="stat-label">
-
-                <span>
-                    CPU USAGE
-                </span>
-
-                <span>
-                    AMD Ryzen
-                </span>
-
-            </div>
-
-            <div
-                class="stat-value"
-                id="cpuValue">
-
-                34%
-
-            </div>
-
-            <div class="progress">
-
-                <span
-                    id="cpuProgress"
-                    style="width:34%">
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-
-                <span>
-                    MEMORY
-                </span>
-
-                <span>
-                    2 GB
-                </span>
-
-            </div>
-
-            <div class="stat-value">
-                1.24 GB
-            </div>
-
-            <div class="progress">
-
-                <span style="width:62%">
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-
-                <span>
-                    STORAGE
-                </span>
-
-                <span>
-                    10 GB
-                </span>
-
-            </div>
-
-            <div class="stat-value">
-                3.2 GB
-            </div>
-
-            <div class="progress">
-
-                <span style="width:32%">
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="stat">
-
-            <div class="stat-label">
-
-                <span>
-                    PLAYERS
-                </span>
-
-                <span>
-                    MAX 50
-                </span>
-
-            </div>
-
-            <div class="stat-value">
-                8 / 50
-            </div>
-
-            <div class="progress">
-
-                <span style="width:16%">
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="panel-grid">
-
-
-        <div class="p-card">
-
-            <div class="p-head">
-
-                <span>
-                    RESOURCE USAGE
-                </span>
-
-                <span class="muted">
-                    LIVE · 60 SEC
-                </span>
-
-            </div>
-
-            <div
-                class="resource-chart"
-                id="resourceChart">
-            </div>
-
-        </div>
-
-
-        <div class="p-card">
-
-            <div class="p-head">
-
-                <span>
-                    PLAYERS ONLINE
-                </span>
-
-                <span class="online">
-                    8 ONLINE
-                </span>
-
-            </div>
-
-            <div
-                class="player-list"
-                id="playerList">
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="panel-grid">
-
-
-        <div class="p-card">
-
-            <div class="p-head">
-
-                <span>
-                    LIVE CONSOLE
-                </span>
-
-                <button
-                    class="pill"
-                    onclick="showTab('console')">
-
-                    Open console
-
-                </button>
-
-            </div>
-
-            <div
-                class="console"
-                id="miniConsole">
-            </div>
-
-        </div>
-
-
-        <div class="p-card">
-
-            <div class="p-head">
-                SERVER INFO
-            </div>
-
-            <div
-                style="
-                padding:16px;
-                font-size:12px;
-                line-height:2;
-                color:#8993a3;">
-
-                <b style="color:white">
-                    Minecraft 1.21.x
-                </b>
-
-                <br>
-
-                Node:
-                EU-FRA-04
-
-                <br>
-
-                IP:
-                play.survival.netherhost.net
-
-                <br>
-
-                Port:
-                25565
-
-                <br>
-
-                Uptime:
-                <span class="online">
-                    14d 08h 32m
-                </span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- CONSOLE -->
-
-<div
-    class="tab"
-    id="tab-console">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Management
-            </div>
-
-            <h1>
-                Console
-            </h1>
-
-        </div>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div
-            class="console"
-            id="fullConsole"
-            style="height:570px;">
-        </div>
-
-
-        <div class="chat-input">
-
-            <input
-                id="command"
-                placeholder="Type a console command...">
-
-            <button
-                class="btn primary"
-                onclick="sendCommand()">
-
-                Send
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- FILES -->
-
-<div
-    class="tab"
-    id="tab-files">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Storage
-            </div>
-
-            <h1>
-                File Manager
-            </h1>
-
-        </div>
-
-        <button
-            class="btn primary"
-            onclick="toast('New folder created')">
-
-            + New folder
-
-        </button>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div class="p-head">
-
-            <span>
-                /home/container
-            </span>
-
-            <span class="muted">
-                12.8 MB
-            </span>
-
-        </div>
-
-        <div id="files">
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- PLAYERS -->
-
-<div
-    class="tab"
-    id="tab-players">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Community
-            </div>
-
-            <h1>
-                Players
-            </h1>
-
-        </div>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div
-            id="playersPage">
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- BACKUPS -->
-
-<div
-    class="tab"
-    id="tab-backups">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Safety
-            </div>
-
-            <h1>
-                Backups
-            </h1>
-
-        </div>
-
-        <button
-            class="btn primary"
-            onclick="toast('Backup started')">
-
-            Create backup
-
-        </button>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div class="file-row">
-            <span>
-                🗄 Daily Backup · Aug 22, 2026
-            </span>
-
-            <span>
-                1.8 GB · Complete
-            </span>
-        </div>
-
-        <div class="file-row">
-            <span>
-                🗄 Daily Backup · Aug 21, 2026
-            </span>
-
-            <span>
-                1.7 GB · Complete
-            </span>
-        </div>
-
-        <div class="file-row">
-            <span>
-                🗄 Weekly Backup · Aug 18, 2026
-            </span>
-
-            <span>
-                1.6 GB · Complete
-            </span>
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- PLUGINS -->
-
-<div
-    class="tab"
-    id="tab-plugins">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Extensions
-            </div>
-
-            <h1>
-                Plugins
-            </h1>
-
-        </div>
-
-        <button
-            class="btn primary"
-            onclick="toast('Plugin browser opened')">
-
-            Browse plugins
-
-        </button>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div class="file-row">
-
-            <span>
-                🧩 EssentialsX
-            </span>
-
-            <span class="online">
-                Enabled
-            </span>
-
-        </div>
-
-        <div class="file-row">
-
-            <span>
-                🧩 LuckPerms
-            </span>
-
-            <span class="online">
-                Enabled
-            </span>
-
-        </div>
-
-        <div class="file-row">
-
-            <span>
-                🧩 ViaVersion
-            </span>
-
-            <span class="online">
-                Enabled
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- DATABASE -->
-
-<div
-    class="tab"
-    id="tab-database">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Data
-            </div>
-
-            <h1>
-                Databases
-            </h1>
-
-        </div>
-
-        <button
-            class="btn primary"
-            onclick="toast('Database created')">
-
-            + Create database
-
-        </button>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div class="file-row">
-
-            <span>
-                🗃 survival_db
-            </span>
-
-            <span>
-                MySQL · 12.4 MB
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- SCHEDULE -->
-
-<div
-    class="tab"
-    id="tab-schedule">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Automation
-            </div>
-
-            <h1>
-                Schedules
-            </h1>
-
-        </div>
-
-        <button
-            class="btn primary"
-            onclick="toast('Schedule created')">
-
-            + New schedule
-
-        </button>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div class="file-row">
-
-            <span>
-                Daily backup
-            </span>
-
-            <span>
-                Every day · 04:00
-            </span>
-
-        </div>
-
-        <div class="file-row">
-
-            <span>
-                Restart server
-            </span>
-
-            <span>
-                Every Sunday · 05:00
-            </span>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- SETTINGS -->
-
-<div
-    class="tab"
-    id="tab-settings">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Configuration
-            </div>
-
-            <h1>
-                Server Settings
-            </h1>
-
-        </div>
-
-    </div>
-
-
-    <div class="p-card">
-
-        <div class="form">
-
-            <label>
-                Server name
-
-                <input
-                    value="Survival SMP">
-
-            </label>
-
-
-            <label>
-                Software
-
-                <select>
-
-                    <option>
-                        Paper
-                    </option>
-
-                    <option>
-                        Vanilla
-                    </option>
-
-                    <option>
-                        Fabric
-                    </option>
-
-                    <option>
-                        Forge
-                    </option>
-
-                </select>
-
-            </label>
-
-
-            <label>
-                Server address
-
-                <input
-                    value="play.survival.netherhost.net">
-
-            </label>
-
-
-            <button
-                class="btn primary"
-                onclick="toast('Settings saved')">
-
-                Save changes
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- COMMUNITY -->
-
-<div
-    class="tab"
-    id="tab-community">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Communication
-            </div>
-
-            <h1>
-                Community Chat
-            </h1>
-
-        </div>
-
-    </div>
-
-
-    <div class="p-card chat-box">
-
-        <div
-            class="chat-messages"
-            id="communityMessages">
-
-            <div>
-                <b class="orange">
-                    Theo
-                </b>
-                Welcome everyone 👋
-            </div>
-
-            <div>
-                <b style="color:#7d9cff">
-                    Alex
-                </b>
-                Server is running great!
-            </div>
-
-            <div>
-                <b class="green">
-                    Mika
-                </b>
-                Backup completed.
-            </div>
-
-        </div>
-
-
-        <div class="chat-input">
-
-            <input
-                id="communityInput"
-                placeholder="Write a message...">
-
-            <button
-                class="btn primary"
-                onclick="sendChat('community')">
-
-                Send
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- STAFF -->
-
-<div
-    class="tab"
-    id="tab-staff">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Private
-            </div>
-
-            <h1>
-                Staff Chat
-            </h1>
-
-        </div>
-
-    </div>
-
-
-    <div class="p-card chat-box">
-
-        <div
-            class="chat-messages"
-            id="staffMessages">
-
-            <div>
-                <b class="orange">
-                    Theo
-                </b>
-                Server update tonight.
-            </div>
-
-            <div>
-                <b class="green">
-                    Staff · Mika
-                </b>
-                I'll handle backups.
-            </div>
-
-        </div>
-
-
-        <div class="chat-input">
-
-            <input
-                id="staffInput"
-                placeholder="Message staff...">
-
-            <button
-                class="btn primary"
-                onclick="sendChat('staff')">
-
-                Send
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- BILLING -->
-
-<div
-    class="tab"
-    id="tab-billing">
-
-    <div class="panel-title">
-
-        <div>
-
-            <div class="kicker">
-                Account
-            </div>
-
-            <h1>
-                Billing
-            </h1>
-
-        </div>
-
-    </div>
-
-
-    <div class="grid-3">
-
-        <div class="card">
-
-            <h3>
-                Current plan
-            </h3>
-
-            <div class="price">
-                $0
-                <small>
-                    / forever
-                </small>
-            </div>
-
-            <p>
-                2 GB Dedicated RAM · 10 GB NVMe
-            </p>
-
-            <button
-                class="btn primary"
-                style="margin-top:20px"
-                onclick="openCreate()">
-
-                Upgrade server
-
-            </button>
-
-        </div>
-
-
-        <div class="card">
-
-            <h3>
-                Next invoice
-            </h3>
-
-            <div class="price">
-                $0
-            </div>
-
-            <p>
-                No payment due on your current free plan.
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-</div>
-
-</main>
-
-</div>
-
-</div>
-
-
-<!-- ======================================================
-     CREATE SERVER MODAL
-====================================================== -->
-
-<div
-    id="createModal"
-    class="modal hidden">
-
-    <div class="modal-card">
-
-        <h2>
-            Create your server
-        </h2>
-
-        <p>
-            Choose a game, plan and region.
-            This frontend simulates deployment in the browser.
-        </p>
-
-
-        <div class="form">
-
-            <label>
-                Server name
-
-                <input
-                    id="newName"
-                    value="My New Server">
-
-            </label>
-
-
-            <label>
-                Game
-
-                <select id="newGame">
-
-                    <option>
-                        Minecraft
-                    </option>
-
-                    <option>
-                        Velocity Proxy
-                    </option>
-
-                    <option>
-                        Counter-Strike 2
-                    </option>
-
-                    <option>
-                        Team Fortress 2
-                    </option>
-
-                    <option>
-                        Among Us
-                    </option>
-
-                    <option>
-                        Discord Bot
-                    </option>
-
-                </select>
-
-            </label>
-
-
-            <label>
-                Plan
-
-                <select id="newPlan">
-
-                    <option>
-                        Free · 2 GB
-                    </option>
-
-                    <option>
-                        4 GB · $5.99/month
-                    </option>
-
-                    <option>
-                        Custom
-                    </option>
-
-                </select>
-
-            </label>
-
-
-            <label>
-                Region
-
-                <select>
-
-                    <option>
-                        Europe · Frankfurt
-                    </option>
-
-                    <option>
-                        North America · Texas
-                    </option>
-
-                    <option>
-                        Asia · Hong Kong
-                    </option>
-
-                </select>
-
-            </label>
-
-        </div>
-
-
-        <div class="modal-actions">
-
-            <button
-                class="btn"
-                onclick="closeCreate()">
-
-                Cancel
-
-            </button>
-
-            <button
-                class="btn primary"
-                onclick="createServer()">
-
-                Deploy server
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- TOAST -->
-
-<div
-    id="toast"
-    class="toast">
-</div>
-
 
 <script>
 
-/* =========================================================
-   BASIC HELPERS
-========================================================= */
+/* =========================
+   PARTICLES
+========================= */
 
-function $(id) {
-    return document.getElementById(id);
+const particles =
+    document.getElementById("particles");
+
+for (let i = 0; i < 70; i++) {
+
+    const particle =
+        document.createElement("i");
+
+    particle.className =
+        "particle";
+
+    particle.style.left =
+        Math.random() * 100 + "%";
+
+    particle.style.animationDuration =
+        (8 + Math.random() * 18) + "s";
+
+    particle.style.animationDelay =
+        (-Math.random() * 20) + "s";
+
+    particle.style.opacity =
+        .15 + Math.random() * .55;
+
+    particle.style.transform =
+        `scale(${.5 + Math.random() * 1.5})`;
+
+    particles.appendChild(particle);
 }
 
 
-/* =========================================================
-   HERO CHART
-========================================================= */
-
-function createHeroChart() {
-
-    const chart = $("heroChart");
-
-    if (!chart) return;
-
-    chart.innerHTML = "";
-
-    for (let i = 0; i < 22; i++) {
-
-        const bar = document.createElement("div");
-
-        bar.className = "chart-bar";
-
-        bar.style.height =
-            (20 + Math.random() * 75) + "%";
-
-        chart.appendChild(bar);
-    }
-}
-
-
-/* =========================================================
-   RESOURCE CHART
-========================================================= */
-
-function createResourceChart() {
-
-    const chart = $("resourceChart");
-
-    if (!chart) return;
-
-    chart.innerHTML = "";
-
-    for (let i = 0; i < 45; i++) {
-
-        const bar = document.createElement("div");
-
-        bar.className = "resource-bar";
-
-        bar.style.height =
-            (12 + Math.random() * 85) + "%";
-
-        chart.appendChild(bar);
-    }
-}
-
-
-/* =========================================================
-   PLAYERS
-========================================================= */
-
-const players = [
-    "TheeeoDev",
-    "Alex",
-    "Mika",
-    "Noah",
-    "Emma",
-    "Felix",
-    "Oliver",
-    "Steve"
-];
-
-
-function renderPlayers() {
-
-    let html = "";
-
-    players.forEach((player,index) => {
-
-        html += `
-            <div class="player">
-
-                <span class="avatar">
-                    ${player.charAt(0)}
-                </span>
-
-                <span>
-                    ${player}
-                </span>
-
-                <span class="player-role">
-                    ${index % 2 === 0 ? "Survival" : "Lobby"}
-                </span>
-
-                <i class="player-dot"></i>
-
-            </div>
-        `;
-
-    });
-
-    $("playerList").innerHTML = html;
-
-    $("playersPage").innerHTML = html;
-}
-
-
-/* =========================================================
-   FILES
-========================================================= */
-
-function renderFiles() {
-
-    const files = [
-        ["📁","world/","Directory"],
-        ["📁","plugins/","Directory"],
-        ["📁","config/","Directory"],
-        ["📄","server.properties","18 KB"],
-        ["📄","bukkit.yml","4 KB"],
-        ["📄","eula.txt","1 KB"],
-        ["📄","ops.json","1 KB"],
-        ["📄","whitelist.json","2 KB"]
-    ];
-
-    let html = "";
-
-    files.forEach(file => {
-
-        html += `
-            <div class="file-row">
-
-                <span>
-                    ${file[0]} ${file[1]}
-                </span>
-
-                <span>
-                    ${file[2]}
-                </span>
-
-            </div>
-        `;
-
-    });
-
-    $("files").innerHTML = html;
-}
-
-
-/* =========================================================
-   CONSOLE
-========================================================= */
-
-let logs = [
-
-    ["[System] Initializing server startup scripts...",""],
-    ["[System] Loading server properties...",""],
-    ["[Server] Opening port 0.0.0.0:25565",""],
-    ['[Server] Preparing level "world"',""] ,
-    ['[Server] Done (3.48s)! For help, type "help"',"log-ok"],
-    ["[Player] TheeeoDev joined the game","log-ok"],
-    ["[System] Backup schedule completed","log-ok"]
-];
-
-
-function renderConsole() {
-
-    let html = "";
-
-    logs.forEach(log => {
-
-        html += `
-            <div class="${log[1]}">
-                ${escapeHTML(log[0])}
-            </div>
-        `;
-
-    });
-
-    $("miniConsole").innerHTML = html;
-    $("fullConsole").innerHTML = html;
-
-    $("miniConsole").scrollTop =
-        $("miniConsole").scrollHeight;
-
-    $("fullConsole").scrollTop =
-        $("fullConsole").scrollHeight;
-}
-
-
-function addLog(message,className="") {
-
-    logs.push([
-        message,
-        className
-    ]);
-
-    renderConsole();
-}
-
-
-function sendCommand() {
-
-    const input = $("command");
-
-    const command = input.value.trim();
-
-    if (!command) return;
-
-    addLog(
-        "> " + command,
-        "log-orange"
-    );
-
-    setTimeout(() => {
-
-        addLog(
-            "[Console] Command executed successfully.",
-            "log-ok"
+/* =========================
+   HEADER SCROLL
+========================= */
+
+const header =
+    document.getElementById("header");
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        header.classList.toggle(
+            "scrolled",
+            window.scrollY > 30
         );
 
-    },300);
-
-    input.value = "";
-
-    toast("Command sent");
-}
+    }
+);
 
 
-/* =========================================================
-   PANEL NAVIGATION
-========================================================= */
+/* =========================
+   MOBILE MENU
+========================= */
 
-function openPanel() {
+const menu =
+    document.getElementById("menu");
 
-    $("website").classList.add("hidden");
+const nav =
+    document.getElementById("nav");
 
-    $("panel").classList.remove("hidden");
+menu.addEventListener(
+    "click",
+    () => {
 
-    window.scrollTo(0,0);
-
-}
-
-
-function closePanel() {
-
-    $("panel").classList.add("hidden");
-
-    $("website").classList.remove("hidden");
-
-    window.scrollTo(0,0);
-
-}
-
-
-function showTab(name) {
-
-    document
-        .querySelectorAll(".tab")
-        .forEach(tab => {
-
-            tab.classList.remove("active");
-
-        });
-
-
-    const selected =
-        $("tab-" + name);
-
-    if (selected) {
-
-        selected.classList.add("active");
+        nav.classList.toggle("open");
 
     }
-
-
-    document
-        .querySelectorAll(".side-item[data-tab]")
-        .forEach(item => {
-
-            item.classList.toggle(
-                "active",
-                item.dataset.tab === name
-            );
-
-        });
-
-}
-
+);
 
 document
-    .querySelectorAll(".side-item[data-tab]")
-    .forEach(item => {
+    .querySelectorAll("nav a")
+    .forEach(link => {
 
-        item.addEventListener(
+        link.addEventListener(
             "click",
             () => {
 
-                showTab(
-                    item.dataset.tab
-                );
+                nav.classList.remove("open");
 
             }
         );
@@ -3914,445 +1800,175 @@ document
     });
 
 
-/* =========================================================
-   SERVER ACTIONS
-========================================================= */
+/* =========================
+   SCROLL REVEAL
+========================= */
 
-function serverAction(action) {
+const observer =
+    new IntersectionObserver(
+        entries => {
 
-    const status = $("status");
+            entries.forEach(
+                entry => {
 
-    if (action === "stopped") {
+                    if (
+                        entry.isIntersecting
+                    ) {
 
-        status.textContent =
-            "● OFFLINE";
+                        entry.target
+                            .classList
+                            .add("show");
 
-        status.classList.add(
-            "offline"
-        );
+                    }
 
-    } else {
-
-        status.textContent =
-            "● ONLINE";
-
-        status.classList.remove(
-            "offline"
-        );
-
-    }
-
-
-    addLog(
-        "[NetherPanel] Server " +
-        action +
-        ".",
-        "log-orange"
-    );
-
-    toast(
-        "Server " +
-        action +
-        "."
-    );
-
-}
-
-
-/* =========================================================
-   CREATE SERVER
-========================================================= */
-
-function openCreate(game,plan) {
-
-    $("createModal")
-        .classList.remove("hidden");
-
-
-    if (game) {
-
-        $("newGame").value =
-            game;
-
-    }
-
-
-    if (plan) {
-
-        $("newPlan").value =
-            plan;
-
-    }
-
-}
-
-
-function closeCreate() {
-
-    $("createModal")
-        .classList.add("hidden");
-
-}
-
-
-function createServer() {
-
-    const name =
-        $("newName").value.trim()
-        || "My New Server";
-
-
-    closeCreate();
-
-    toast(
-        name +
-        " is being deployed..."
-    );
-
-
-    setTimeout(() => {
-
-        openPanel();
-
-        toast(
-            name +
-            " deployed successfully!"
-        );
-
-    },900);
-
-}
-
-
-/* =========================================================
-   REVIEWS
-========================================================= */
-
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-function addReview() {
-
-    const name =
-        $("reviewName").value.trim();
-
-    const text =
-        $("reviewText").value.trim();
-
-
-    if (!name || !text) {
-
-        toast(
-            "Enter your name and review first."
-        );
-
-        return;
-
-    }
-
-
-    const article =
-        document.createElement("article");
-
-
-    article.className =
-        "card";
-
-
-    article.innerHTML = `
-
-        <div style="
-            display:flex;
-            justify-content:space-between;
-            align-items:center;">
-
-            <b class="avatar">
-                ${escapeHTML(
-                    name.charAt(0)
-                ).toUpperCase()}
-            </b>
-
-            <span class="stars">
-                ★★★★★
-            </span>
-
-        </div>
-
-        <p style="
-            margin:16px 0;
-            color:#c1c8d4;">
-
-            “${escapeHTML(text)}”
-
-        </p>
-
-        <small class="muted">
-            ${escapeHTML(name)}
-            · Community member
-        </small>
-
-    `;
-
-
-    $("reviewList")
-        .appendChild(article);
-
-
-    $("reviewName").value = "";
-
-    $("reviewText").value = "";
-
-
-    toast(
-        "Review published!"
-    );
-
-}
-
-
-/* =========================================================
-   CHAT
-========================================================= */
-
-function sendChat(type) {
-
-    const input =
-        type === "community"
-        ? $("communityInput")
-        : $("staffInput");
-
-
-    const messages =
-        type === "community"
-        ? $("communityMessages")
-        : $("staffMessages");
-
-
-    const message =
-        input.value.trim();
-
-
-    if (!message) return;
-
-
-    const div =
-        document.createElement("div");
-
-
-    div.innerHTML = `
-
-        <b class="orange">
-            Theo
-        </b>
-
-        ${escapeHTML(message)}
-
-    `;
-
-
-    messages.appendChild(div);
-
-
-    messages.scrollTop =
-        messages.scrollHeight;
-
-
-    input.value = "";
-
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer;
-
-
-function toast(message) {
-
-    const element =
-        $("toast");
-
-
-    element.textContent =
-        message;
-
-
-    element.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(() => {
-
-            element.classList.remove(
-                "show"
+                }
             );
 
-        },2300);
-
-}
-
-
-/* =========================================================
-   SCROLL REVEALS
-========================================================= */
-
-const reveals =
-    document.querySelectorAll(
-        ".reveal"
-    );
-
-
-function revealOnScroll() {
-
-    reveals.forEach(element => {
-
-        const top =
-            element.getBoundingClientRect()
-                .top;
-
-
-        if (
-            top <
-            window.innerHeight * .9
-        ) {
-
-            element.classList.add(
-                "visible"
-            );
-
+        },
+        {
+            threshold: .12
         }
+    );
+
+
+document
+    .querySelectorAll(".reveal")
+    .forEach(element => {
+
+        observer.observe(element);
 
     });
 
-}
 
+/* =========================
+   HERO PARALLAX
+========================= */
 
-window.addEventListener(
-    "scroll",
-    revealOnScroll
-);
-
-
-/* =========================================================
-   CTRL + K
-========================================================= */
+const visual =
+    document.getElementById("visual");
 
 document.addEventListener(
-    "keydown",
+    "mousemove",
     event => {
 
-        if (
-            event.ctrlKey &&
-            event.key.toLowerCase() === "k"
-        ) {
+        const x =
+            (event.clientX /
+                window.innerWidth -
+                .5) * 2;
 
-            event.preventDefault();
+        const y =
+            (event.clientY /
+                window.innerHeight -
+                .5) * 2;
 
-            openPanel();
-
-            $("panelSearch").focus();
-
-        }
-
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeCreate();
-
-        }
+        visual.style.transform =
+            `translate(
+                ${x * 10}px,
+                ${y * 10}px
+            )`;
 
     }
 );
 
 
-/* =========================================================
-   LIVE STATS
-========================================================= */
+/* =========================
+   CARD 3D HOVER
+========================= */
 
-setInterval(() => {
+document
+    .querySelectorAll(".card")
+    .forEach(card => {
 
-    const cpu =
-        Math.floor(
-            20 +
-            Math.random() * 35
+        card.addEventListener(
+            "mousemove",
+            event => {
+
+                const rect =
+                    card.getBoundingClientRect();
+
+                const x =
+                    event.clientX -
+                    rect.left;
+
+                const y =
+                    event.clientY -
+                    rect.top;
+
+                const rotateX =
+                    (y / rect.height - .5)
+                    * -7;
+
+                const rotateY =
+                    (x / rect.width - .5)
+                    * 7;
+
+                card.style.transform =
+                    `perspective(800px)
+                     rotateX(${rotateX}deg)
+                     rotateY(${rotateY}deg)
+                     translateY(-5px)`;
+
+            }
         );
 
 
-    $("heroCpu").textContent =
-        cpu + "%";
+        card.addEventListener(
+            "mouseleave",
+            () => {
+
+                card.style.transform = "";
+
+            }
+        );
+
+    });
 
 
-    $("cpuValue").textContent =
-        cpu + "%";
+/* =========================
+   MAGNETIC BUTTONS
+========================= */
+
+document
+    .querySelectorAll(".magnetic")
+    .forEach(button => {
+
+        button.addEventListener(
+            "mousemove",
+            event => {
+
+                const rect =
+                    button.getBoundingClientRect();
+
+                const x =
+                    event.clientX -
+                    rect.left -
+                    rect.width / 2;
+
+                const y =
+                    event.clientY -
+                    rect.top -
+                    rect.height / 2;
+
+                button.style.transform =
+                    `translate(
+                        ${x * .12}px,
+                        ${y * .12}px
+                    )`;
+
+            }
+        );
 
 
-    $("cpuProgress")
-        .style.width =
-        cpu + "%";
+        button.addEventListener(
+            "mouseleave",
+            () => {
 
+                button.style.transform = "";
 
-    createHeroChart();
+            }
+        );
 
-    createResourceChart();
-
-},2500);
-
-
-/* =========================================================
-   ENTER IN CONSOLE
-========================================================= */
-
-$("command").addEventListener(
-    "keydown",
-    event => {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            sendCommand();
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-createHeroChart();
-
-createResourceChart();
-
-renderPlayers();
-
-renderFiles();
-
-renderConsole();
-
-revealOnScroll();
+    });
 
 </script>
 
